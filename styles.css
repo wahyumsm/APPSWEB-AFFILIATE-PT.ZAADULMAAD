@@ -1,0 +1,108 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+    max-width: 900px;
+    margin: 40px auto;
+    background: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.sidebar {
+    width: 40%;
+    background: #005f56;
+    color: white;
+    padding: 20px;
+}
+
+.sidebar h2 {
+    text-align: center;
+}
+
+.accordion-button {
+    background: #01796f;
+    color: white;
+    padding: 10px;
+    border: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 5px;
+    border-radius: 5px;
+}
+
+.accordion-content {
+    display: none;
+    padding: 10px;
+    background: white;
+    color: black;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+.form-container {
+    width: 60%;
+    padding: 20px;
+}
+
+.form-container h2 {
+    text-align: center;
+    color: #01796f;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+input, select {
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.phone-container {
+    display: flex;
+    align-items: center;
+}
+
+.phone-container span {
+    padding: 8px;
+    background: #ddd;
+    border: 1px solid #ccc;
+    border-radius: 5px 0 0 5px;
+}
+
+.phone-container input {
+    flex: 1;
+    border-radius: 0 5px 5px 0;
+}
+
+button {
+    margin-top: 15px;
+    padding: 10px;
+    background: #01796f;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+button:hover {
+    background: #005f56;
+}

@@ -1,7 +1,3 @@
-<?php
-include 'config/database.php';
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -267,74 +263,9 @@ include 'config/database.php';
             <th>Completion</th>
                 </tr>
             </thead>
-            <?php
-// Pastikan variabel $conn sudah didefinisikan sebelumnya sebagai koneksi MySQLi
-// Contoh: $conn = new mysqli($servername, $username, $password, $dbname);
-
-// Periksa koneksi
-if ($conn->connect_error) {
-    die("Koneksi gagal: " . $conn->connect_error);
-}
-
-// Query untuk mengambil data dari tabel paketumroh
-$sql = "SELECT * FROM paketumroh";
-$result = $conn->query($sql);
-
-// Memeriksa apakah ada data yang ditemukan
-if ($result->num_rows > 0) {
-    // Membuat tabel HTML dan headernya
-    echo '<table border="1">
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>Kode</th>
-                    <th>Nama</th>
-                    <th>Paket Umroh</th>
-                    <th>Pemesan</th>
-                    <th>Jumlah Pax</th>
-                    <th>Tanggal Berangkat</th>
-                    <th>Waktu Transaksi</th>
-                    <th>Status</th>
-                    <th>% Bayar</th>
-                    <th>Start Date</th>
-                    <th>Completion</th>
-                </tr>
-            </thead>
-            <tbody>';
-
-    // Inisialisasi nomor urut
-    $no = 1;
-
-    // Loop melalui data dan tampilkan dalam baris tabel
-    while ($row = $result->fetch_assoc()) {
-        echo '<tr>
-                <td>' . $no . '</td>
-                <td>' . htmlspecialchars($row['kode']) . '</td>
-                <td>' . htmlspecialchars($row['nama']) . '</td>
-                <td>' . htmlspecialchars($row['paket_umroh']) . '</td>
-                <td>' . htmlspecialchars($row['pemesan']) . '</td>
-                <td>' . htmlspecialchars($row['jumlah_pax']) . '</td>
-                <td>' . htmlspecialchars($row['tanggal_berangkat']) . '</td>
-                <td>' . htmlspecialchars($row['waktu_transaksi']) . '</td>
-                <td>' . htmlspecialchars($row['status']) . '</td>
-                <td>' . htmlspecialchars($row['persen_bayar']) . '</td>
-                <td>' . htmlspecialchars($row['start_date']) . '</td>
-                <td>' . htmlspecialchars($row['completion']) . '</td>
-              </tr>';
-        $no++;
-    }
-
-    echo '</tbody></table>';
-} else {
-    echo 'Tidak ada data yang ditemukan.';
-}
-
-// Menutup koneksi
-$conn->close();
-?>
-  
-
-
+            <tbody id="tableBody">
+                <!-- Data akan di-generate oleh JavaScript -->
+            </tbody>
         </table>
               <!-- End Table with stripped rows -->
 

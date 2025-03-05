@@ -101,7 +101,7 @@
             <p class="text-xl font-bold text-red-500">Total: IDR 0,00</p>
           </div>
           <button class="w-full bg-green-600 text-white p-2 rounded-lg mb-2">Pesan Paket</button>
-          <button class="w-full bg-gray-200 text-gray-700 p-2 rounded-lg mb-2">Konsultasi Paket</button>
+          <!-- <button class="w-full bg-gray-200 text-gray-700 p-2 rounded-lg mb-2">Konsultasi Paket</button> -->
           <button class="w-full bg-gray-200 text-gray-700 p-2 rounded-lg">Download Brosur</button>
         </form>
       </div>

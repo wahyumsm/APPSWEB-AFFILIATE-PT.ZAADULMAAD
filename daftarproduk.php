@@ -287,9 +287,6 @@ include 'config/database.php';
 </div>
 
 
-
-
-
             <!-- Status Keberangkatan & Pembayaran -->
        
             <div>
@@ -355,6 +352,18 @@ include 'config/database.php';
 
             <!-- Kolom Agen -->
             <?php
+            $host = "localhost"; 
+            $user = "nusw7771_nusw7771"; 
+            $pass = "nusatechno"; 
+            $db   = "nusw7771_zaadulmad";
+            
+            $conn = new mysqli($host, $user, $pass, $db);
+            
+            if ($conn->connect_error) {
+                die("Koneksi gagal: " . $conn->connect_error);
+            } else {
+                echo "Koneksi berhasil!";
+            }
 
 $query = "SELECT nama, kontak FROM agen";
 $result = $conn->query($query);
@@ -379,9 +388,9 @@ $conn->close();
 
 <?php
 $host = "localhost"; // Sesuaikan dengan database-mu
-$user = "root";
-$password = "";
-$database = "zaadulmad";
+$user = "nusw7771_nusw7771";
+$password = "nusatechno";
+$database = "nusw7771_zaadulmad";
 
 $conn = new mysqli($host, $user, $password, $database);
 
@@ -410,9 +419,23 @@ $result = $conn->query($query);
 ?>
 
         </div>
-        <button class="mt-6 w-full bg-gradient-to-r from-green-500 to-teal-500 text-white py-3 rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">Transaksi</button>
+        <button type="button" class="mt-6 w-full bg-green-500 text-white py-3 rounded-lg shadow-md hover:bg-green-700 focus:outline-none">Submit</button>
+        <!-- <p class="text-lg font-semibold mt-2">Total Bayar: <span id="total-bayar">Rp 0</span></p> -->
     </form>
 </div>
+<div id="promo-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center hidden">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+        <h2 class="text-lg font-semibold text-gray-800 mb-4">Masukkan Kode Promo</h2>
+        <input type="text" id="kode-promo" class="form-input w-full mb-4" placeholder="Masukkan kode promo...">
+        <div class="flex justify-end gap-2">
+            <button class="bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-600" onclick="closePromoModal()">Batal</button>
+            <button class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-700" onclick="confirmTransaction()">Gunakan</button>
+        </div>
+    </div>
+    
+</div>
+
+
 
 
 <script>
@@ -525,6 +548,44 @@ function cekKodeReferal() {
         .catch(error => console.error('Error:', error));
 }
 </script>
+<!-- Script untuk Modal -->
+<script>
+    function openPromoModal() {
+        document.getElementById('promo-modal').classList.remove('hidden');
+    }
+    
+    function closePromoModal() {
+        document.getElementById('promo-modal').classList.add('hidden');
+    }
+    
+    function confirmTransaction() {
+        let promoCode = document.getElementById('kode-promo').value;
+        alert('Kode Promo: ' + promoCode + '\nTransaksi Berhasil!');
+        closePromoModal();
+    }
+</script>
+
+<!-- Style Tambahan -->
+<style>
+    .form-input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+        outline: none;
+    }
+    .form-input:focus {
+        border-color: #4F46E5;
+        box-shadow: 0 0 5px rgba(79, 70, 229, 0.5);
+    }
+</style>
+<style>
+.input-field {
+    @apply mt-1 block w-full py-3 px-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm;
+}
+</style>
+
 
 </body>
 </html>

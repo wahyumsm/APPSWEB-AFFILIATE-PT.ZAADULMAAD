@@ -178,6 +178,12 @@
               <i class="bi bi-circle"></i><span>Komisi Transaksi</span>
             </a>
           </li>
+          <li>
+            <a href="dataproduk.php">
+              <i class="bi bi-circle"></i><span>Data Produk </span>
+            </a>
+          </li>
+          
         </ul>
       </li><!-- End Tables Nav -->
 
@@ -264,7 +270,7 @@
                 </tr>
             </thead>
             <tbody id="tableBody">
-                <!-- Data akan di-generate oleh JavaScript -->
+
             </tbody>
         </table>
               <!-- End Table with stripped rows -->

@@ -1,6 +1,18 @@
 <?php
 
+
 include 'config/database.php';
+
+
+$sql = "SELECT * FROM paket_ibadah";
+$result = $conn->query($sql);
+
+
+if (!$result) {
+    die("Query Error: " . $conn->error);
+}
+
+
 ?>
 <html lang="en">
 <head>
@@ -54,220 +66,85 @@ include 'config/database.php';
     </div>
 </div>
 
-<!-- Swiper Container (List Paket Umroh & Haji) -->
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-    
-    <!-- Paket Umroh Bayar Belakangan -->
-    <div class="bg-white rounded-lg shadow-md overflow-hidden paket-card" data-category="umroh">
-        <div class="relative">
-            <img alt="Paket Umroh Bayar Belakangan" class="w-full" height="200" src="./umrohdata/Umroh-Juli-23-Juta-768x960.jpg" width="400"/>
-            <div class="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold px-2 py-1">PROMO</div>
-        </div>
-        <div class="p-4">
-            <h2 class="text-lg font-bold mb-2">Umroh Juli 23 Juta</h2>
-            <ul class="text-sm text-gray-600 mb-4">
-                <li><i class="fas fa-calendar-alt mr-2"></i>06 April 2025</li>
-                <li><i class="fas fa-hotel mr-2"></i>Mawaddah Al Baraka Hotel (Makkah)</li>
-                <li><i class="fas fa-hotel mr-2"></i>Durrat Al Eiman (Madinah)</li>
-                <li><i class="fas fa-plane mr-2"></i>IndiGo Airlines</li>
-                <li><i class="fas fa-plane-departure mr-2"></i>Soekarno-Hatta International Airport (CGK)</li>
-            </ul>
-            <p class="text-sm text-gray-600 mb-2">Sisa Seat : 90</p>
-            <p class="text-lg font-bold text-red-500 mb-4">Harga mulai :<br/>IDR 1.000.000,00</p>
-            <button class="w-full bg-green-600 text-white py-2 rounded-md" onclick="scrollToForm()">PESAN SEKARANG</button>
-            <a href="detailproduk.php" class="block w-full bg-blue-600 text-white text-center py-2 rounded-md mt-2">DETAIL PAKET</a>
-        </div>
-    </div>
+    <?php while ($row = $result->fetch_assoc()) { ?>
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden paket-card transform transition duration-300 hover:scale-105" data-category="<?php echo strtolower($row['jenis_produk']); ?>">
+            
+            <!-- Gambar -->
+            <div class="relative group">
+                <div class="overflow-hidden rounded-t-lg">
+                    <img src="<?php echo $row['foto_produk']; ?>" 
+                         alt="<?php echo $row['nama_produk']; ?>" 
+                         class="w-full object-cover aspect-[4/5] min-h-[300px] bg-gray-200 transition-transform duration-300 group-hover:scale-105">
+                </div>
 
-    <!-- Paket Promo Umroh 9 Hari -->
-    <div class="bg-white rounded-lg shadow-md overflow-hidden paket-card" data-category="umroh">
-        <div class="relative">
-            <img alt="Paket Promo Umroh 9 Hari" class="w-full" height="200" src="umrohdata/Umroh-Agustus-23-Juta-768x960.jpg" width="400"/>
-            <div class="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold px-2 py-1">PROMO</div>
-        </div>
-        <div class="p-4">
-            <h2 class="text-lg font-bold mb-2">Umroh Agustus 23 Juta</h2>
-            <ul class="text-sm text-gray-600 mb-4">
-                <li><i class="fas fa-calendar-alt mr-2"></i>06 April 2025</li>
-                <li><i class="fas fa-hotel mr-2"></i>Marsa Al Jariah Hotel (Makkah)</li>
-                <li><i class="fas fa-hotel mr-2"></i>Durrat Al Eiman (Madinah)</li>
-                <li><i class="fas fa-plane mr-2"></i>IndiGo Airlines</li>
-                <li><i class="fas fa-plane-departure mr-2"></i>Soekarno-Hatta International Airport (CGK)</li>
-            </ul>
-            <p class="text-sm text-gray-600 mb-2">Sisa Seat : 90</p>
-            <p class="text-lg font-bold text-red-500 mb-4">Harga mulai :<br/>IDR 28.500.000,00</p>
-            <button class="w-full bg-green-600 text-white py-2 rounded-md" onclick="scrollToForm()">PESAN SEKARANG</button>
-            <a href="detailproduk.php" class="block w-full bg-blue-600 text-white text-center py-2 rounded-md mt-2">DETAIL PAKET</a>
-        </div>
-    </div>
+                <!-- Badge Status -->
+                <div class="absolute top-3 right-3 px-3 py-1 rounded-full text-xs font-bold text-white shadow-md
+                    <?php echo ($row['status_produk'] == 'Tersedia') ? 'bg-green-500' : 'bg-red-500'; ?>">
+                    <?php echo strtoupper($row['status_produk']); ?>
+                </div>
+            </div>
 
-    <!-- Paket Umroh Plus Thoif 9 Hari -->
-    <div class="bg-white rounded-lg shadow-md overflow-hidden paket-card" data-category="umroh">
-        <div class="relative">
-            <img alt="Paket Umroh Plus Thoif" class="w-full" height="200" src="./umrohdata/Umroh-September-23-Juta-768x960.jpg" width="400"/>
-            <div class="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold px-2 py-1">PROMO</div>
+            <!-- Detail Produk -->
+            <div class="p-5 space-y-4">
+                <h2 class="text-xl font-bold text-gray-900"><?php echo $row['nama_produk']; ?></h2>
+                
+                <p class="text-sm text-gray-600 flex items-center gap-2">
+                    <i class="fas fa-box text-blue-500 text-sm"></i> 
+                    <?php echo $row['jenis_paket']; ?> - <?php echo $row['kategori']; ?>
+                </p>
+
+                <ul class="text-sm text-gray-700 space-y-2">
+                    <li class="flex items-center gap-2">
+                        <i class="fas fa-plane-departure text-green-500 text-sm"></i> 
+                        <strong>Keberangkatan:</strong> <?php echo date("d F Y", strtotime($row['keberangkatan'])); ?>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <i class="fas fa-users text-purple-500 text-sm"></i> 
+                        <strong>Stok:</strong> <?php echo $row['stok']; ?> seat
+                    </li>
+                    
+                </ul>
+
+                <!-- Harga -->
+                <div class="text-lg font-bold text-red-500 flex items-center gap-2">
+                    <i class="fas fa-tags"></i> Harga Mulai:
+                </div>
+                <ul class="text-md text-gray-700 space-y-1">
+                    <li class="flex items-center gap-2">
+                        <i class="fas fa-bed text-gray-500 text-sm"></i> 
+                        <strong>Quad:</strong> IDR <?php echo number_format($row['harga_quad'], 0, ',', '.'); ?>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <i class="fas fa-bed text-gray-500 text-sm"></i> 
+                        <strong>Triple:</strong> IDR <?php echo number_format($row['harga_triple'], 0, ',', '.'); ?>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <i class="fas fa-bed text-gray-500 text-sm"></i> 
+                        <strong>Double:</strong> IDR <?php echo number_format($row['harga_double'], 0, ',', '.'); ?>
+                    </li>
+                </ul>
+
+                <!-- Tombol Pesan & Detail -->
+                <div class="space-y-3">
+                    <button class="w-full bg-green-600 text-white py-3 rounded-md font-bold flex items-center justify-center gap-2 hover:bg-green-700 transition">
+                        <i class="fas fa-shopping-cart"></i> PESAN SEKARANG
+                    </button>
+                    <a href="detailproduk.php?id=<?php echo $row['id_produk']; ?>" 
+                       class="block w-full bg-blue-600 text-white text-center py-3 rounded-md font-bold flex items-center justify-center gap-2 hover:bg-blue-700 transition">
+                        <i class="fas fa-info-circle"></i> DETAIL PAKET
+                    </a>
+                </div>
+            </div>
         </div>
-        <div class="p-4">
-            <h2 class="text-lg font-bold mb-2">Umroh Septermber 23 Juta</h2>
-            <ul class="text-sm text-gray-600 mb-4">
-                <li><i class="fas fa-calendar-alt mr-2"></i>16 Juli 2025, 23 Juli 2025, 31 Juli 2025</li>
-                <li><i class="fas fa-hotel mr-2"></i>Marsa Al Jariah Hotel (Makkah)</li>
-                <li><i class="fas fa-hotel mr-2"></i>Durrat Al Eiman (Madinah)</li>
-                <li><i class="fas fa-plane mr-2"></i>Lion Air</li>
-                <li><i class="fas fa-plane-departure mr-2"></i>Soekarno-Hatta International Airport (CGK)</li>
-            </ul>
-            <p class="text-sm text-gray-600 mb-2">Sisa Seat : 135</p>
-            <p class="text-lg font-bold text-red-500 mb-4">Harga mulai :<br/>IDR 32.300.000,00</p>
-            <button class="w-full bg-green-600 text-white py-2 rounded-md" onclick="scrollToForm()">PESAN SEKARANG</button>
-            <a href="detailproduk.php" class="block w-full bg-blue-600 text-white text-center py-2 rounded-md mt-2">DETAIL PAKET</a>
-        </div>
-    </div>
-
-
-    <div class="bg-white rounded-lg shadow-md overflow-hidden paket-card" data-category="umroh">
-        <div class="relative">
-            <img alt="Paket Umroh Bayar Belakangan" class="w-full" height="200" src="./umrohdata/oktober23juta.jpg" width="400"/>
-            <div class="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold px-2 py-1">PROMO</div>
-        </div>
-        <div class="p-4">
-            <h2 class="text-lg font-bold mb-2">Umroh Oktober 23 Juta</h2>
-            <ul class="text-sm text-gray-600 mb-4">
-                <li><i class="fas fa-calendar-alt mr-2"></i>06 April 2025</li>
-                <li><i class="fas fa-hotel mr-2"></i>Mawaddah Al Baraka Hotel (Makkah)</li>
-                <li><i class="fas fa-hotel mr-2"></i>Durrat Al Eiman (Madinah)</li>
-                <li><i class="fas fa-plane mr-2"></i>IndiGo Airlines</li>
-                <li><i class="fas fa-plane-departure mr-2"></i>Soekarno-Hatta International Airport (CGK)</li>
-            </ul>
-            <p class="text-sm text-gray-600 mb-2">Sisa Seat : 90</p>
-            <p class="text-lg font-bold text-red-500 mb-4">Harga mulai :<br/>IDR 1.000.000,00</p>
-            <button class="w-full bg-green-600 text-white py-2 rounded-md" onclick="scrollToForm()">PESAN SEKARANG</button>
-            <a href="detailproduk.php" class="block w-full bg-blue-600 text-white text-center py-2 rounded-md mt-2">DETAIL PAKET</a>
-        </div>
-    </div>
-
-    <!-- Paket Promo Umroh 9 Hari -->
-    <div class="bg-white rounded-lg shadow-md overflow-hidden paket-card" data-category="umroh">
-        <div class="relative">
-            <img alt="Paket Promo Umroh 9 Hari" class="w-full" height="200" src="umrohdata/november.jpg" width="400"/>
-            <div class="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold px-2 py-1">PROMO</div>
-        </div>
-        <div class="p-4">
-            <h2 class="text-lg font-bold mb-2">Umroh November 23 Juta</h2>
-            <ul class="text-sm text-gray-600 mb-4">
-                <li><i class="fas fa-calendar-alt mr-2"></i>06 April 2025</li>
-                <li><i class="fas fa-hotel mr-2"></i>Marsa Al Jariah Hotel (Makkah)</li>
-                <li><i class="fas fa-hotel mr-2"></i>Durrat Al Eiman (Madinah)</li>
-                <li><i class="fas fa-plane mr-2"></i>IndiGo Airlines</li>
-                <li><i class="fas fa-plane-departure mr-2"></i>Soekarno-Hatta International Airport (CGK)</li>
-            </ul>
-            <p class="text-sm text-gray-600 mb-2">Sisa Seat : 90</p>
-            <p class="text-lg font-bold text-red-500 mb-4">Harga mulai :<br/>IDR 28.500.000,00</p>
-            <button class="w-full bg-green-600 text-white py-2 rounded-md" onclick="scrollToForm()">PESAN SEKARANG</button>
-            <a href="detailproduk.php" class="block w-full bg-blue-600 text-white text-center py-2 rounded-md mt-2">DETAIL PAKET</a>
-        </div>
-    </div>
-    <div class="bg-white rounded-lg shadow-md overflow-hidden paket-card" data-category="umroh">
-        <div class="relative">
-            <img alt="Paket Promo Umroh 9 Hari" class="w-full" height="200" src="umrohdata/desember.jpg" width="400"/>
-            <div class="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold px-2 py-1">PROMO</div>
-        </div>
-        <div class="p-4">
-            <h2 class="text-lg font-bold mb-2">Umroh Akhir Tahun 23 Juta</h2>
-            <ul class="text-sm text-gray-600 mb-4">
-                <li><i class="fas fa-calendar-alt mr-2"></i>06 April 2025</li>
-                <li><i class="fas fa-hotel mr-2"></i>Marsa Al Jariah Hotel (Makkah)</li>
-                <li><i class="fas fa-hotel mr-2"></i>Durrat Al Eiman (Madinah)</li>
-                <li><i class="fas fa-plane mr-2"></i>IndiGo Airlines</li>
-                <li><i class="fas fa-plane-departure mr-2"></i>Soekarno-Hatta International Airport (CGK)</li>
-            </ul>
-            <p class="text-sm text-gray-600 mb-2">Sisa Seat : 90</p>
-            <p class="text-lg font-bold text-red-500 mb-4">Harga mulai :<br/>IDR 28.500.000,00</p>
-            <button class="w-full bg-green-600 text-white py-2 rounded-md" onclick="scrollToForm()">PESAN SEKARANG</button>
-            <a href="detailproduk.php" class="block w-full bg-blue-600 text-white text-center py-2 rounded-md mt-2">DETAIL PAKET</a>
-        </div>
-    </div>
-    <!-- Paket Umroh Plus Thoif 9 Hari -->
-    <div class="bg-white rounded-lg shadow-md overflow-hidden paket-card" data-category="umroh">
-        <div class="relative">
-            <img alt="Paket Umroh Plus Thoif" class="w-full" height="200" src="./umrohdata/Umroh-September-23-Juta-768x960.jpg" width="400"/>
-            <div class="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold px-2 py-1">PROMO</div>
-        </div>
-        <div class="p-4">
-            <h2 class="text-lg font-bold mb-2">Umroh Septermber 23</h2>
-            <ul class="text-sm text-gray-600 mb-4">
-                <li><i class="fas fa-calendar-alt mr-2"></i>16 Juli 2025, 23 Juli 2025, 31 Juli 2025</li>
-                <li><i class="fas fa-hotel mr-2"></i>Marsa Al Jariah Hotel (Makkah)</li>
-                <li><i class="fas fa-hotel mr-2"></i>Durrat Al Eiman (Madinah)</li>
-                <li><i class="fas fa-plane mr-2"></i>Lion Air</li>
-                <li><i class="fas fa-plane-departure mr-2"></i>Soekarno-Hatta International Airport (CGK)</li>
-            </ul>
-            <p class="text-sm text-gray-600 mb-2">Sisa Seat : 135</p>
-            <p class="text-lg font-bold text-red-500 mb-4">Harga mulai :<br/>IDR 32.300.000,00</p>
-            <button class="w-full bg-green-600 text-white py-2 rounded-md" onclick="scrollToForm()">PESAN SEKARANG</button>
-            <a href="detailproduk.php" class="block w-full bg-blue-600 text-white text-center py-2 rounded-md mt-2">DETAIL PAKET</a>
-        </div>
-    </div>
-
-
-
-
-
-
-
-
-
-
-
-    
-    <!-- Paket Haji -->
-    <div class="bg-white rounded-lg shadow-md overflow-hidden paket-card" data-category="haji">
-        <div class="relative">
-            <img alt="Paket Haji" class="w-full" height="200" src="./hajidata/hajifuroda.jpg" width="400"/>
-            <div class="absolute top-0 right-0 bg-blue-500 text-white text-xs font-bold px-2 py-1">Paket Haji</div>
-        </div>
-        <div class="p-4">
-            <h2 class="text-lg font-bold mb-2">Haji Furoda 2025</h2>
-            <ul class="text-sm text-gray-600 mb-4">
-                <li><i class="fas fa-calendar-alt mr-2"></i>August 2025</li>
-                <li><i class="fas fa-hotel mr-2"></i>Hotel Mekkah</li>
-                <li><i class="fas fa-hotel mr-2"></i>Hotel Madinah</li>
-                <li><i class="fas fa-plane mr-2"></i>Garuda Airlines</li>
-                <li><i class="fas fa-plane-departure mr-2"></i>Soekarno-Hatta International Airport (CGK)</li>
-            </ul>
-            <p class="text-sm text-gray-600 mb-2">Sisa Seat : 50</p>
-            <p class="text-lg font-bold text-red-500 mb-4">Harga mulai :<br/>IDR 55.000.000,00</p>
-            <button class="w-full bg-green-600 text-white py-2 rounded-md" onclick="scrollToForm()">PESAN SEKARANG</button>
-            <a href="detailproduk.php" class="block w-full bg-blue-600 text-white text-center py-2 rounded-md mt-2">DETAIL PAKET</a>
-        </div>
-    </div>
-    <div class="bg-white rounded-lg shadow-md overflow-hidden paket-card" data-category="haji">
-        <div class="relative">
-            <img alt="Paket Haji" class="w-full" height="200" src="./hajidata/hajikhusus.jpg" width="400"/>
-            <div class="absolute top-0 right-0 bg-blue-500 text-white text-xs font-bold px-2 py-1">Paket Haji</div>
-        </div>
-        <div class="p-4">
-            <h2 class="text-lg font-bold mb-2">Haji Khusus
-            </h2>
-            <ul class="text-sm text-gray-600 mb-4">
-                <li><i class="fas fa-calendar-alt mr-2"></i>August 2025</li>
-                <li><i class="fas fa-hotel mr-2"></i>Hotel Mekkah</li>
-                <li><i class="fas fa-hotel mr-2"></i>Hotel Madinah</li>
-                <li><i class="fas fa-plane mr-2"></i>Garuda Airlines</li>
-                <li><i class="fas fa-plane-departure mr-2"></i>Soekarno-Hatta International Airport (CGK)</li>
-            </ul>
-            <p class="text-sm text-gray-600 mb-2">Sisa Seat : 50</p>
-            <p class="text-lg font-bold text-red-500 mb-4">Harga mulai :<br/>IDR 55.000.000,00</p>
-            <button class="w-full bg-green-600 text-white py-2 rounded-md" onclick="scrollToForm()">PESAN SEKARANG</button>
-            <a href="detailproduk.php" class="block w-full bg-blue-600 text-white text-center py-2 rounded-md mt-2">DETAIL PAKET</a>
-        </div>
-
+    <?php } ?>
 </div>
 
 </div>
    <!-- Form Transaksi -->
    <div id="form-transaksi" class="bg-white rounded-lg shadow-lg p-8 max-w-9xl mx-auto mt-8">
     <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6">Form Transaksi</h2>
-    <form>
+    <form method="POST" action="prosestransaksiuser.php" enctype="multipart/form-data">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Kolom Identitas -->
             <div>
@@ -278,6 +155,14 @@ include 'config/database.php';
                 <label class="block text-sm font-medium text-gray-700 mb-2" for="email">Email</label>
                 <input class="mt-1 block w-full py-3 px-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm" id="email" name="email" type="email" placeholder="Masukkan email"/>
             </div>
+            <div>
+    <label class="block text-sm font-medium text-gray-700 mb-2" for="telepon">Telepon / WhatsApp</label>
+    <input class="mt-1 block w-full py-3 px-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm" 
+           id="telepon" 
+           name="telepon" 
+           type="text" 
+           placeholder="Masukkan nomor telepon" />
+</div>
 
             <!-- Kolom Transaksi -->
             <div>
@@ -285,94 +170,51 @@ include 'config/database.php';
     <input class="mt-1 block w-full py-3 px-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm" 
         id="jumlah" name="jumlah" type="text" placeholder="Masukkan jumlah yang ingin dibayarkan" oninput="formatCurrency(this)" />
 </div>
-
+<input type="hidden" name="kode_referral" value="<?php echo isset($_GET['ref']) ? $_GET['ref'] : ''; ?>">
 
             <!-- Status Keberangkatan & Pembayaran -->
        
-            <div>
-    <label class="block text-sm font-medium text-gray-700 mb-2" for="metode-pembayaran">Metode Pembayaran</label>
-    <select class="mt-1 block w-full py-3 px-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm" id="metode-pembayaran">
-        <option value="">Pilih Metode Pembayaran</option>
-        <optgroup label="Bank Transfer">
-            <option>Bank BCA</option>
-            <option>Bank Mandiri</option>
-            <option>Bank BRI</option>
-            <option>Bank BNI</option>
-            <option>Bank CIMB Niaga</option>
-            <option>Bank Permata</option>
-            <option>Bank Syariah Indonesia (BSI)</option>
-        </optgroup>
-        <optgroup label="E-Wallet">
-            <option>Dana</option>
-            <option>GoPay</option>
-            <option>OVO</option>
-            <option>ShopeePay</option>
-            <option>LinkAja</option>
-        </optgroup>
-        <optgroup label="Lainnya">
-            <option>Cash</option>
-            <option>Credit Card</option>
-            <option>COD Di Kantor</option>
-        </optgroup>
-    </select>
-</div>
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2" for="bukti-pembayaran">Upload Bukti Pembayaran</label>
-                <input class="mt-1 block w-full py-3 px-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm" id="bukti-pembayaran" name="bukti-pembayaran" type="file"/>
-            </div>
 
-            <!-- Kode Referal -->
-            <div>
-    <label class="block text-sm font-medium text-gray-700 mb-2" for="kode-referal">Kode Referal</label>
-    <input class="mt-1 block w-full py-3 px-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm" 
-        id="kode-referal" name="kode-referal" type="text" placeholder="Masukkan kode referal" oninput="cekKodeReferal()" />
-    <p id="promo-message" class="text-sm text-green-600 mt-2"></p>
-</div>
 
 
             <!-- Kolom Tanggal dan Lokasi -->
             <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2" for="tanggal-transaksi">Tanggal Transaksi</label>
-                <input class="mt-1 block w-full py-3 px-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm" id="tanggal-transaksi" name="tanggal-transaksi" type="date"/>
-            </div>
+    <label class="block text-sm font-medium text-gray-700 mb-2" for="tanggal_transaksi">Tanggal Transaksi</label>
+    <input class="mt-1 block w-full py-3 px-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm" 
+           id="tanggal_transaksi" 
+           name="tanggal_transaksi" 
+           type="date" 
+           value="<?php echo date('Y-m-d'); ?>" />
+</div>
+
             <!-- <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2" for="keberangkatan">Keberangkatan</label>
                 <input class="mt-1 block w-full py-3 px-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm" id="keberangkatan" name="keberangkatan" type="text" placeholder="Masukkan lokasi keberangkatan"/>
             </div> -->
 
             <!-- Kolom Upload Dokumen -->
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2" for="foto-ktp">Upload Foto KTP</label>
-                <input class="mt-1 block w-full py-3 px-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm" id="foto-ktp" name="foto-ktp" type="file"/>
-            </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2" for="foto-paspor">Upload Foto Paspor</label>
-                <input class="mt-1 block w-full py-3 px-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm" id="foto-paspor" name="foto-paspor" type="file"/>
-            </div>
+
 
             <!-- Kolom Agen -->
             <?php
-            $host = "localhost"; 
-            $user = "nusw7771_nusw7771"; 
-            $pass = "nusatechno"; 
-            $db   = "nusw7771_zaadulmad";
+       $host = "localhost"; // Sesuaikan dengan database-mu
+$user = "root";
+$password = "";
+$db = "zaadulmad";
             
-            $conn = new mysqli($host, $user, $pass, $db);
+            $conn = new mysqli($host, $user, $password, $db);
             
             if ($conn->connect_error) {
                 die("Koneksi gagal: " . $conn->connect_error);
-            } else {
-                echo "Koneksi berhasil!";
-            }
-
+            } 
 $query = "SELECT nama, kontak FROM agen";
 $result = $conn->query($query);
 ?>
 
 <div>
-    <label class="block text-sm font-medium text-gray-700 mb-2" for="sub-agen">Sub Agen</label>
+    <label class="block text-sm font-medium text-gray-700 mb-2" for="sub_agen">Sub Agen</label>
     <select class="mt-1 block w-full py-3 px-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm"
-            id="sub-agen" name="sub-agen">
+            id="sub_agen" name="sub_agen">
         <option value="">Pilih Sub Agen</option>
         <?php while ($row = $result->fetch_assoc()): ?>
             <option value="<?= $row['nama']; ?>">
@@ -388,9 +230,9 @@ $conn->close();
 
 <?php
 $host = "localhost"; // Sesuaikan dengan database-mu
-$user = "nusw7771_nusw7771";
-$password = "nusatechno";
-$database = "nusw7771_zaadulmad";
+$user = "root";
+$password = "";
+$database = "zaadulmad";
 
 $conn = new mysqli($host, $user, $password, $database);
 
@@ -404,9 +246,9 @@ $result = $conn->query($query);
 ?>
 
 <div>
-    <label class="block text-sm font-medium text-gray-700 mb-2" for="agen-pusat">Agen Pusat</label>
+    <label class="block text-sm font-medium text-gray-700 mb-2" for="agen_pusat">Agen Pusat</label>
     <select class="mt-1 block w-full py-3 px-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm"
-            id="agen-pusat" name="agen-pusat">
+            id="agen_pusat" name="agen_pusat">
         <option value="">Pilih Agen Pusat</option>
         <?php while ($row = $result->fetch_assoc()): ?>
             <option value="<?= htmlspecialchars($row['induk_keagenan']); ?>"><?= htmlspecialchars($row['induk_keagenan']); ?></option>
@@ -419,7 +261,7 @@ $result = $conn->query($query);
 ?>
 
         </div>
-        <button type="button" class="mt-6 w-full bg-green-500 text-white py-3 rounded-lg shadow-md hover:bg-green-700 focus:outline-none">Submit</button>
+        <button type="submit" class="mt-6 w-full bg-green-500 text-white py-3 rounded-lg shadow-md hover:bg-green-700 focus:outline-none">Submit</button>
         <!-- <p class="text-lg font-semibold mt-2">Total Bayar: <span id="total-bayar">Rp 0</span></p> -->
     </form>
 </div>

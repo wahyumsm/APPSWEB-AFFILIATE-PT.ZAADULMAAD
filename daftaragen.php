@@ -181,7 +181,7 @@ $result = $conn->query($sql);
         <div class="mb-3">
             <label class="block text-gray-700">Induk Keagenan</label>
             <div class="flex">
-                <input type="text" name="induk_keagenan" class="w-full p-2 border border-gray-300 rounded-l" value="[OFC000001] Biaya Umroh Haji Zaadul Maad Tour Tra" readonly>
+                <input type="text" name="induk_keagenan" class="w-full p-2 border border-gray-300 rounded-l">
                 <button type="button" class="bg-blue-500 text-white p-2 rounded-r"><i class="fas fa-user"></i></button>
             </div>
         </div>

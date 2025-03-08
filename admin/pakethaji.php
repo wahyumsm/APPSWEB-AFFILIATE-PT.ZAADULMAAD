@@ -178,6 +178,12 @@
               <i class="bi bi-circle"></i><span>Komisi Transaksi</span>
             </a>
           </li>
+          <li>
+            <a href="dataproduk.php">
+              <i class="bi bi-circle"></i><span>Data Produk </span>
+            </a>
+          </li>
+          
         </ul>
       </li><!-- End Tables Nav -->
 

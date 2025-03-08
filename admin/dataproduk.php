@@ -277,7 +277,8 @@
                                     echo "<td class='align-middle text-center'>" . htmlspecialchars($row['stok']) . "</td>";
                                     echo "<td class='align-middle'>" . htmlspecialchars($row['kategori']) . "</td>";
                                     echo "<td class='align-middle text-center'>";
-                                    echo "<img src='" . htmlspecialchars($row['foto_produk']) . "' class='img-thumbnail' style='width: 50px; height: 50px; object-fit: cover;'>";
+                                    echo "<img src='uploads/" . htmlspecialchars($row['foto_produk']) . "' class='img-thumbnail' style='width: 50px; height: 50px; object-fit: cover;'>";
+
                                     echo "</td>";
                                     echo "<td class='align-middle text-center'>" . htmlspecialchars($row['status_produk']) . "</td>";
                                     echo "<td class='align-middle'>" . htmlspecialchars($row['fasilitas_terbaik']) . "</td>";

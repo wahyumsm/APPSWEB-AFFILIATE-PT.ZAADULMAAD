@@ -72,11 +72,12 @@ if (!$result) {
             
             <!-- Gambar -->
             <div class="relative group">
-                <div class="overflow-hidden rounded-t-lg">
-                    <img src="<?php echo $row['foto_produk']; ?>" 
-                         alt="<?php echo $row['nama_produk']; ?>" 
-                         class="w-full object-cover aspect-[4/5] min-h-[300px] bg-gray-200 transition-transform duration-300 group-hover:scale-105">
-                </div>
+            <div class="overflow-hidden rounded-t-lg">
+    <img src="./admin/uploads/<?php echo htmlspecialchars($row['foto_produk']); ?>" 
+         alt="<?php echo htmlspecialchars($row['nama_produk']); ?>" 
+         class="w-full object-cover aspect-[4/5] min-h-[300px] bg-gray-200 transition-transform duration-300 group-hover:scale-105">
+</div>
+
 
                 <!-- Badge Status -->
                 <div class="absolute top-3 right-3 px-3 py-1 rounded-full text-xs font-bold text-white shadow-md
@@ -140,7 +141,7 @@ if (!$result) {
     <?php } ?>
 </div>
 
-</div>
+
    <!-- Form Transaksi -->
    <div id="form-transaksi" class="bg-white rounded-lg shadow-lg p-8 max-w-9xl mx-auto mt-8">
     <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6">Form Transaksi</h2>

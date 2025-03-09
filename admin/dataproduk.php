@@ -509,6 +509,28 @@ if ($result) {
     .catch(error => console.error("Error:", error));
   });
 </script>
+<script>
+function hapusProduk(id_produk) {
+    if (confirm("Apakah Anda yakin ingin menghapus produk ini?")) {
+        fetch('delete_produk.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `id_produk=${id_produk}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "success") {
+                alert(data.message);
+                location.reload();
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+}
+
+</script>
 
 </body>
 

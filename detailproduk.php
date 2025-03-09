@@ -1,3 +1,48 @@
+<?php
+include 'config/database.php'; // Pastikan file koneksi database sudah dimasukkan
+
+if (isset($_GET['id'])) {
+    $id_produk = $_GET['id'];
+
+    // Pastikan koneksi tidak null
+    if (!$conn) {
+        die("Koneksi database gagal: " . mysqli_connect_error());
+    }
+
+    // Buat query untuk mendapatkan detail produk
+    $query = "SELECT * FROM paket_ibadah WHERE id_produk = ?";
+    $stmt = $conn->prepare($query);
+
+    if ($stmt) {
+        $stmt->bind_param("i", $id_produk);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+
+            // Simpan hasil query ke dalam variabel
+            $nama_produk = $row['nama_produk'];
+            $foto_produk = $row['foto_produk'];
+            $jenis_paket = $row['jenis_paket'];
+            $kategori = $row['kategori'];
+            $keberangkatan = $row['keberangkatan'];
+            $stok = $row['stok'];
+            $harga_double = $row['harga_double'];
+            $harga_triple = $row['harga_triple'];
+            $harga_quad = $row['harga_quad'];
+        } else {
+            die("Produk tidak ditemukan.");
+        }
+    } else {
+        die("Query gagal: " . $conn->error);
+    }
+} else {
+    die("ID produk tidak ditemukan.");
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -31,60 +76,57 @@
 
   <!-- CONTENT -->
   <div class="container mx-auto p-6 md:p-12">
-    <h1 class="text-3xl md:text-4xl font-extrabold text-center mb-8 text-gray-800">Paket Promo Umroh 9 Hari</h1>
+    <h1 class="text-3xl md:text-4xl font-extrabold text-center mb-8 text-gray-800"><?php echo $nama_produk; ?></h1>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
       
-      <!-- IMAGE -->
-      <div>
-        <img class="w-full rounded-xl shadow-xl transform hover:scale-105 transition duration-500" 
-          src="https://zadulmaadmandiri.com/wp-content/uploads/2025/01/Umroh-Juli-23-Juta-768x960.jpg" alt="Umroh Promo"/>
-      </div>
-
-      <!-- DETAIL PAKET -->
-      <div class="bg-white p-8 rounded-xl shadow-xl">
-        <h2 class="text-xl md:text-2xl font-bold mb-4 text-gray-900">Detail Paket</h2>
-        
-        <div class="divider"></div>
-        <p class="text-gray-700 font-semibold">Program Hari:</p>
-        <p class="text-gray-900">Umrah 9 Hari</p>
-        
-        <div class="divider"></div>
-        <p class="text-gray-700 font-semibold">Bandara Keberangkatan:</p>
-        <p class="text-gray-900">Soekarno-Hatta International Airport (CGK)</p>
-        
-        <div class="divider"></div>
-        <p class="text-gray-700 font-semibold">Tanggal Keberangkatan:</p>
-        <p class="text-gray-900">06 April 2025 <span class="text-green-600 font-bold">(90 Seat Tersedia)</span></p>
-        
-        <div class="divider"></div>
-        <p class="text-gray-700 font-semibold">Pilihan Kamar:</p>
-        
-        <div class="border border-gray-300 rounded-lg p-4 mb-2 bg-gray-50 hover:bg-gray-100 transition">
-          <p class="text-lg font-medium">Double (1 Kamar ber-2)</p>
-          <p class="text-red-600 font-bold">IDR 31.300.000,00/Pax</p>
-        </div>
-        
-        <div class="border border-gray-300 rounded-lg p-4 mb-2 bg-gray-50 hover:bg-gray-100 transition">
-          <p class="text-lg font-medium">Triple (1 Kamar ber-3)</p>
-          <p class="text-red-600 font-bold">IDR 30.000.000,00/Pax</p>
-        </div>
-        
-        <div class="border border-gray-300 rounded-lg p-4 mb-2 bg-gray-50 hover:bg-gray-100 transition">
-          <p class="text-lg font-medium">Quad (1 Kamar ber-4)</p>
-          <p class="text-red-600 font-bold">IDR 28.500.000,00/Pax</p>
+        <!-- Gambar -->
+        <div>
+            <img class="w-full rounded-xl shadow-xl transform hover:scale-105 transition duration-500" 
+                src="./admin/uploads/<?php echo $foto_produk; ?>" alt="<?php echo $nama_produk; ?>"/>
         </div>
 
-        <div class="divider"></div>
-        <button class="w-full text-white py-3 rounded-lg shadow-md btn-primary font-bold text-lg hover:shadow-lg transition duration-300">
-          Pesan Sekarang
-        </button>
-        
-        <button class="w-full bg-gray-200 text-gray-700 py-3 rounded-lg mt-3 shadow-md btn-secondary font-semibold text-lg hover:shadow-lg transition duration-300">
-          Download Brosur
-        </button>
-      </div>
+        <!-- Detail Paket -->
+        <div class="bg-white p-8 rounded-xl shadow-xl">
+            <h2 class="text-xl md:text-2xl font-bold mb-4 text-gray-900">Detail Paket</h2>
+            
+            <div class="divider"></div>
+            <p class="text-gray-700 font-semibold">Jenis Paket:</p>
+            <p class="text-gray-900"><?php echo $jenis_paket; ?> - <?php echo $kategori; ?></p>
+            
+            <div class="divider"></div>
+            <p class="text-gray-700 font-semibold">Tanggal Keberangkatan:</p>
+            <p class="text-gray-900"><?php echo $keberangkatan; ?> <span class="text-green-600 font-bold">(<?php echo $stok; ?> Seat Tersedia)</span></p>
+            
+            <div class="divider"></div>
+            <p class="text-gray-700 font-semibold">Pilihan Kamar:</p>
+            
+            <div class="border border-gray-300 rounded-lg p-4 mb-2 bg-gray-50 hover:bg-gray-100 transition">
+                <p class="text-lg font-medium">Double (1 Kamar ber-2)</p>
+                <p class="text-red-600 font-bold">IDR <?php echo $harga_double; ?>/Pax</p>
+            </div>
+            
+            <div class="border border-gray-300 rounded-lg p-4 mb-2 bg-gray-50 hover:bg-gray-100 transition">
+                <p class="text-lg font-medium">Triple (1 Kamar ber-3)</p>
+                <p class="text-red-600 font-bold">IDR <?php echo $harga_triple; ?>/Pax</p>
+            </div>
+            
+            <div class="border border-gray-300 rounded-lg p-4 mb-2 bg-gray-50 hover:bg-gray-100 transition">
+                <p class="text-lg font-medium">Quad (1 Kamar ber-4)</p>
+                <p class="text-red-600 font-bold">IDR <?php echo $harga_quad; ?>/Pax</p>
+            </div>
+
+            <div class="divider"></div>
+            <button class="w-full text-white py-3 rounded-lg shadow-md bg-green-600 font-bold text-lg hover:shadow-lg transition duration-300">
+                Pesan Sekarang
+            </button>
+            
+            <button class="w-full bg-gray-200 text-gray-700 py-3 rounded-lg mt-3 shadow-md font-semibold text-lg hover:shadow-lg transition duration-300">
+                Download Brosur
+            </button>
+        </div>
     </div>
-  </div>
+</div>
+
 
 </body>
 </html>

@@ -128,9 +128,10 @@ if (!$result) {
 
                 <!-- Tombol Pesan & Detail -->
                 <div class="space-y-3">
-                    <button class="w-full bg-green-600 text-white py-3 rounded-md font-bold flex items-center justify-center gap-2 hover:bg-green-700 transition">
-                        <i class="fas fa-shopping-cart"></i> PESAN SEKARANG
-                    </button>
+                <button id="openModal" class="w-full bg-green-600 text-white py-3 rounded-md font-bold flex items-center justify-center gap-2 hover:bg-green-700 transition">
+    <i class="fas fa-shopping-cart"></i> PESAN SEKARANG
+</button>
+
                     <a href="detailproduk.php?id=<?php echo $row['id_produk']; ?>" 
                        class="block w-full bg-blue-600 text-white text-center py-3 rounded-md font-bold flex items-center justify-center gap-2 hover:bg-blue-700 transition">
                         <i class="fas fa-info-circle"></i> DETAIL PAKET
@@ -142,229 +143,109 @@ if (!$result) {
 </div>
 
 
-   <!-- Form Transaksi -->
-   <div id="form-transaksi" class="bg-white rounded-lg shadow-lg p-8 max-w-9xl mx-auto mt-8">
-    <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6">Form Transaksi</h2>
-    <form method="POST" action="prosestransaksiuser.php" enctype="multipart/form-data">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Kolom Identitas -->
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2" for="nama">Nama</label>
-                <input class="mt-1 block w-full py-3 px-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm" id="nama" name="nama" type="text" placeholder="Masukkan nama lengkap"/>
-            </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2" for="email">Email</label>
-                <input class="mt-1 block w-full py-3 px-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm" id="email" name="email" type="email" placeholder="Masukkan email"/>
-            </div>
-            <div>
-    <label class="block text-sm font-medium text-gray-700 mb-2" for="telepon">Telepon / WhatsApp</label>
-    <input class="mt-1 block w-full py-3 px-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm" 
-           id="telepon" 
-           name="telepon" 
-           type="text" 
-           placeholder="Masukkan nomor telepon" />
-</div>
-
-            <!-- Kolom Transaksi -->
-            <div>
-    <label class="block text-sm font-medium text-gray-700 mb-2" for="jumlah">Jumlah Dibayar</label>
-    <input class="mt-1 block w-full py-3 px-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm" 
-        id="jumlah" name="jumlah" type="text" placeholder="Masukkan jumlah yang ingin dibayarkan" oninput="formatCurrency(this)" />
-</div>
-<input type="hidden" name="kode_referral" value="<?php echo isset($_GET['ref']) ? $_GET['ref'] : ''; ?>">
-
-            <!-- Status Keberangkatan & Pembayaran -->
-       
-
-
-
-            <!-- Kolom Tanggal dan Lokasi -->
-            <div>
-    <label class="block text-sm font-medium text-gray-700 mb-2" for="tanggal_transaksi">Tanggal Transaksi</label>
-    <input class="mt-1 block w-full py-3 px-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm" 
-           id="tanggal_transaksi" 
-           name="tanggal_transaksi" 
-           type="date" 
-           value="<?php echo date('Y-m-d'); ?>" />
-</div>
-
-            <!-- <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2" for="keberangkatan">Keberangkatan</label>
-                <input class="mt-1 block w-full py-3 px-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm" id="keberangkatan" name="keberangkatan" type="text" placeholder="Masukkan lokasi keberangkatan"/>
-            </div> -->
-
-            <!-- Kolom Upload Dokumen -->
-
-
-            <!-- Kolom Agen -->
-            <?php
-       $host = "localhost"; // Sesuaikan dengan database-mu
-$user = "root";
-$password = "";
-$db = "zaadulmad";
+<div id="modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="relative w-full max-w-4xl p-8 bg-white rounded-xl shadow-2xl flex flex-col md:flex-row transition-all duration-300">
+        <!-- Form Container -->
+        <div class="w-full md:w-1/2 p-6">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6" id="modalTitle">Sign In</h2>
             
-            $conn = new mysqli($host, $user, $password, $db);
+            <!-- Sign In Form -->
+            <form id="signInForm" action="login.php" method="POST" class="space-y-5">
+                <div>
+                    <label for="emailLogin" class="block text-sm font-semibold text-gray-600">Email address</label>
+                    <input type="email" id="emailLogin" class="mt-1 w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                </div>
+                <div>
+                    <label for="passwordLogin" class="block text-sm font-semibold text-gray-600">Password</label>
+                    <input type="password" id="passwordLogin" class="mt-1 w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                </div>
+                <button type="submit" class="w-full py-3 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition">Sign In</button>
+                <p class="text-sm text-gray-500">Don't have an account? <a href="#" id="showRegister" class="text-indigo-600 hover:underline">Register</a></p>
+            </form>
             
-            if ($conn->connect_error) {
-                die("Koneksi gagal: " . $conn->connect_error);
-            } 
-$query = "SELECT nama, kontak FROM agen";
-$result = $conn->query($query);
-?>
-
-<div>
-    <label class="block text-sm font-medium text-gray-700 mb-2" for="sub_agen">Sub Agen</label>
-    <select class="mt-1 block w-full py-3 px-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm"
-            id="sub_agen" name="sub_agen">
-        <option value="">Pilih Sub Agen</option>
-        <?php while ($row = $result->fetch_assoc()): ?>
-            <option value="<?= $row['nama']; ?>">
-                <?= $row['nama']; ?> (<?= $row['kontak']; ?>)
-            </option>
-        <?php endwhile; ?>
-    </select>
-</div>
-
-<?php
-$conn->close();
-?>
-
-<?php
-$host = "localhost"; // Sesuaikan dengan database-mu
-$user = "root";
-$password = "";
-$database = "zaadulmad";
-
-$conn = new mysqli($host, $user, $password, $database);
-
-if ($conn->connect_error) {
-    die("Koneksi gagal: " . $conn->connect_error);
-}
-
-// Ambil data agen pusat dari tabel induk_keagenan
-$query = "SELECT induk_keagenan FROM agen";
-$result = $conn->query($query);
-?>
-
-<div>
-    <label class="block text-sm font-medium text-gray-700 mb-2" for="agen_pusat">Agen Pusat</label>
-    <select class="mt-1 block w-full py-3 px-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm"
-            id="agen_pusat" name="agen_pusat">
-        <option value="">Pilih Agen Pusat</option>
-        <?php while ($row = $result->fetch_assoc()): ?>
-            <option value="<?= htmlspecialchars($row['induk_keagenan']); ?>"><?= htmlspecialchars($row['induk_keagenan']); ?></option>
-        <?php endwhile; ?>
-    </select>
-</div>
-
-<?php
-
-?>
-
+            <!-- Register Form -->
+            <form id="registerForm" action="prosestransaksiuser.php" method="POST" class="space-y-5 hidden">
+                <div>
+                    <label for="name" class="block text-sm font-semibold text-gray-600">Name</label>
+                    <input type="text" id="name" class="mt-1 w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                </div>
+                <div>
+                    <label for="ktp" class="block text-sm font-semibold text-gray-600">No KTP</label>
+                    <input type="text" id="ktp" class="mt-1 w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                </div>
+                <div>
+                    <label for="email" class="block text-sm font-semibold text-gray-600">Email address</label>
+                    <input type="email" id="email" class="mt-1 w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                </div>
+                <div>
+                    <label for="phone" class="block text-sm font-semibold text-gray-600">Phone Number</label>
+                    <input type="tel" id="phone" class="mt-1 w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                </div>
+                <button type="submit" class="w-full py-3 bg-green-600 text-white font-semibold rounded-lg shadow-md hover:bg-green-700 transition">Register</button>
+                <p class="text-sm text-gray-500">Already have an account? <a href="#" id="showLogin" class="text-indigo-600 hover:underline">Sign In</a></p>
+            </form>
         </div>
-        <button type="submit" class="mt-6 w-full bg-green-500 text-white py-3 rounded-lg shadow-md hover:bg-green-700 focus:outline-none">Submit</button>
-        <!-- <p class="text-lg font-semibold mt-2">Total Bayar: <span id="total-bayar">Rp 0</span></p> -->
-    </form>
-</div>
-<div id="promo-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center hidden">
-    <div class="bg-white p-6 rounded-lg shadow-lg w-96">
-        <h2 class="text-lg font-semibold text-gray-800 mb-4">Masukkan Kode Promo</h2>
-        <input type="text" id="kode-promo" class="form-input w-full mb-4" placeholder="Masukkan kode promo...">
-        <div class="flex justify-end gap-2">
-            <button class="bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-600" onclick="closePromoModal()">Batal</button>
-            <button class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-700" onclick="confirmTransaction()">Gunakan</button>
+        
+        <!-- Image Container -->
+        <div class="hidden md:block w-1/2 p-4">
+            <img src="umroh.png" alt="Decorative image" class="rounded-lg shadow-md w-full h-full object-cover">
         </div>
+        
+        <!-- Close Button -->
+        <button id="closeModal" class="absolute top-4 right-4 text-gray-600 hover:text-gray-800 text-2xl">&times;</button>
     </div>
-    
 </div>
-
 
 
 
 <script>
-    const agenPusatSelect = document.getElementById("agen-pusat");
-    const agenPusatCustomInput = document.getElementById("agen-pusat-custom");
+    document.getElementById('showRegister').addEventListener('click', function(event) {
+        event.preventDefault();
+        document.getElementById('signInForm').classList.add('hidden');
+        document.getElementById('registerForm').classList.remove('hidden');
+        document.getElementById('modalTitle').innerText = 'Register';
+    });
 
-    agenPusatSelect.addEventListener("change", function() {
-        if (this.value === "lainnya") {
-            agenPusatCustomInput.classList.remove("hidden");
-        } else {
-            agenPusatCustomInput.classList.add("hidden");
-        }
+    document.getElementById('showLogin').addEventListener('click', function(event) {
+        event.preventDefault();
+        document.getElementById('registerForm').classList.add('hidden');
+        document.getElementById('signInForm').classList.remove('hidden');
+        document.getElementById('modalTitle').innerText = 'Sign In';
+    });
+
+    document.getElementById('closeModal').addEventListener('click', function() {
+        document.getElementById('modal').classList.add('hidden');
     });
 </script>
 
 
-<script>
-// Function untuk menampilkan paket berdasarkan kategori
-document.getElementById('keberangkatan').addEventListener('change', function() {
-    var category = this.value;
-    var cards = document.querySelectorAll('.paket-card');
-    
-    cards.forEach(function(card) {
-        if (category === '- Semua Data -') {
-            card.style.display = 'block';
-            card.classList.remove('border-blue-500');
-        } else if (card.dataset.category === category) {
-            card.style.display = 'block';
-            card.classList.add('border-blue-500');
-        } else {
-            card.style.display = 'none';
-            card.classList.remove('border-blue-500');
+
+     
+    </div>
+  
+    <script>
+document.addEventListener("DOMContentLoaded", function() {
+    const openModalBtn = document.querySelectorAll("#openModal"); // Jika ada banyak tombol
+    const modal = document.getElementById("modal");
+    const closeModalBtn = document.getElementById("closeModal");
+
+    openModalBtn.forEach(button => {
+        button.addEventListener("click", function() {
+            modal.classList.remove("hidden"); // Menampilkan modal
+        });
+    });
+
+    closeModalBtn.addEventListener("click", function() {
+        modal.classList.add("hidden"); // Menyembunyikan modal
+    });
+
+    // Menutup modal jika klik di luar kontennya
+    modal.addEventListener("click", function(event) {
+        if (event.target === modal) {
+            modal.classList.add("hidden");
         }
     });
 });
-</script>
-     
-    </div>
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-    <script>
-        var swiper = new Swiper('.swiper-container', {
-            slidesPerView: 1,
-            spaceBetween: 10,
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            },
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-            breakpoints: {
-                640: {
-                    slidesPerView: 1,
-                    spaceBetween: 20,
-                },
-                768: {
-                    slidesPerView: 2,
-                    spaceBetween: 40,
-                },
-                1024: {
-                    slidesPerView: 3,
-                    spaceBetween: 50,
-                },
-            },
-        });
-
-        function scrollToForm() {
-            document.getElementById('form-transaksi').scrollIntoView({ behavior: 'smooth' });
-        }
-    </script>
- <script>
-function formatCurrency(input) {
-    // Ambil hanya angka
-    let value = input.value.replace(/\D/g, '');
-
-    // Ubah angka ke format Rupiah
-    let formatted = new Intl.NumberFormat('id-ID', {
-        style: 'currency',
-        currency: 'IDR',
-        minimumFractionDigits: 0
-    }).format(value ? parseInt(value) : 0);
-
-    // Tampilkan hasil
-    input.value = formatted.replace("Rp", "Rp ");
-}
 </script>
 
 
@@ -392,21 +273,7 @@ function cekKodeReferal() {
 }
 </script>
 <!-- Script untuk Modal -->
-<script>
-    function openPromoModal() {
-        document.getElementById('promo-modal').classList.remove('hidden');
-    }
-    
-    function closePromoModal() {
-        document.getElementById('promo-modal').classList.add('hidden');
-    }
-    
-    function confirmTransaction() {
-        let promoCode = document.getElementById('kode-promo').value;
-        alert('Kode Promo: ' + promoCode + '\nTransaksi Berhasil!');
-        closePromoModal();
-    }
-</script>
+
 
 <!-- Style Tambahan -->
 <style>
@@ -423,6 +290,14 @@ function cekKodeReferal() {
         box-shadow: 0 0 5px rgba(79, 70, 229, 0.5);
     }
 </style>
+<style>
+        .modal {
+            display: none;
+        }
+        .modal.active {
+            display: flex;
+        }
+    </style>
 <style>
 .input-field {
     @apply mt-1 block w-full py-3 px-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm;

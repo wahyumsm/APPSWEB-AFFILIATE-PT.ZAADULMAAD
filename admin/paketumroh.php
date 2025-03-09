@@ -252,27 +252,27 @@
               <h5 class="card-title">Data Transaksi Umroh</h5>
             
               <!-- Table with stripped rows -->
-              <table id="dataTable" class="table table-bordered table-hover">
-            <thead class="table-primary">
-                <tr>
-                <th>No</th>
-            <th>Kode</th>
-            <th>Nama</th>
-            <th>Paket Umroh</th>
-            <th>Pemesan</th>
-            <th>Jumlah Pax</th>
-            <th>Tanggal Berangkat</th>
-            <th>Waktu Transaksi</th>
-            <th>Status</th>
-            <th>% Bayar</th>
-            <th>Start Date</th>
-            <th>Completion</th>
-                </tr>
-            </thead>
-            <tbody id="tableBody">
+                <table id="dataTable" class="table table-bordered table-hover">
+              <thead class="table-primary">
+                  <tr>
+                  <th>No</th>
+              <th>Kode</th>
+              <th>Nama</th>
+              <th>Paket Umroh</th>
+              <th>Pemesan</th>
+              <th>Jumlah Pax</th>
+              <th>Tanggal Berangkat</th>
+              <th>Waktu Transaksi</th>
+              <th>Status</th>
+              <th>% Bayar</th>
+              <th>Start Date</th>
+              <th>Completion</th>
+                  </tr>
+              </thead>
+              <tbody id="tableBody">
 
-            </tbody>
-        </table>
+              </tbody>
+          </table>
               <!-- End Table with stripped rows -->
 
             </div>

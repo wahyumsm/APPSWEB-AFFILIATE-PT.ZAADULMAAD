@@ -199,6 +199,18 @@ if (!$result) {
 
 
 <script>
+    const agenPusatSelect = document.getElementById("agen-pusat");
+    const agenPusatCustomInput = document.getElementById("agen-pusat-custom");
+
+    agenPusatSelect.addEventListener("change", function() {
+        if (this.value === "lainnya") {
+            agenPusatCustomInput.classList.remove("hidden");
+        } else {
+            agenPusatCustomInput.classList.add("hidden");
+        }
+    });
+</script>
+<script>
     document.getElementById('showRegister').addEventListener('click', function(event) {
         event.preventDefault();
         document.getElementById('signInForm').classList.add('hidden');
@@ -219,11 +231,62 @@ if (!$result) {
 </script>
 
 
-
+<script>
+// Function untuk menampilkan paket berdasarkan kategori
+document.getElementById('keberangkatan').addEventListener('change', function() {
+    var category = this.value;
+    var cards = document.querySelectorAll('.paket-card');
+    
+    cards.forEach(function(card) {
+        if (category === '- Semua Data -') {
+            card.style.display = 'block';
+            card.classList.remove('border-blue-500');
+        } else if (card.dataset.category === category) {
+            card.style.display = 'block';
+            card.classList.add('border-blue-500');
+        } else {
+            card.style.display = 'none';
+            card.classList.remove('border-blue-500');
+        }
+    });
+});
+</script>
      
     </div>
-  
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script>
+        var swiper = new Swiper('.swiper-container', {
+            slidesPerView: 1,
+            spaceBetween: 10,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            breakpoints: {
+                640: {
+                    slidesPerView: 1,
+                    spaceBetween: 20,
+                },
+                768: {
+                    slidesPerView: 2,
+                    spaceBetween: 40,
+                },
+                1024: {
+                    slidesPerView: 3,
+                    spaceBetween: 50,
+                },
+            },
+        });
+
+        function scrollToForm() {
+            document.getElementById('form-transaksi').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+<script>
 document.addEventListener("DOMContentLoaded", function() {
     const openModalBtn = document.querySelectorAll("#openModal"); // Jika ada banyak tombol
     const modal = document.getElementById("modal");
@@ -246,6 +309,24 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 });
+</script>
+
+
+ <script>
+function formatCurrency(input) {
+    // Ambil hanya angka
+    let value = input.value.replace(/\D/g, '');
+
+    // Ubah angka ke format Rupiah
+    let formatted = new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR',
+        minimumFractionDigits: 0
+    }).format(value ? parseInt(value) : 0);
+
+    // Tampilkan hasil
+    input.value = formatted.replace("Rp", "Rp ");
+}
 </script>
 
 

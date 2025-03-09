@@ -2,6 +2,13 @@
 session_start();
 include 'config/database.php';
 
+// Cek apakah ada cookie untuk login otomatis
+if (isset($_COOKIE['user_email']) && isset($_COOKIE['user_name'])) {
+    $_SESSION['email'] = $_COOKIE['user_email'];
+    $_SESSION['user'] = $_COOKIE['user_name'];
+}
+
+// Proses Login & Registrasi
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['nama'])) { // **Registrasi**
         $nama = $_POST['nama'];
@@ -45,7 +52,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (password_verify($password, $user['password'])) {
                 $_SESSION['user'] = $user['nama'];
                 $_SESSION['email'] = $user['email'];
-                echo "Login berhasil!"; // AJAX akan menangkap ini
+
+                // Set cookie yang berlaku selama 30 detik
+                setcookie("user_email", $user['email'], time() + 30, "/");
+                setcookie("user_name", $user['nama'], time() + 30, "/");
+
+                echo "Login berhasil!";
             } else {
                 echo "Password salah!";
             }
@@ -53,6 +65,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "Email tidak ditemukan!";
         }
     }
+}
+
+// Logout (hapus cookie)
+if (isset($_GET['logout'])) {
+    setcookie("user_email", "", time() - 3600, "/");
+    setcookie("user_name", "", time() - 3600, "/");
+    session_destroy();
+    echo "Logout berhasil!";
 }
 
 $conn->close();

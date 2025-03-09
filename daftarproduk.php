@@ -32,25 +32,42 @@ if (!$result) {
 	</style>
 </head>
 <body class="bg-gray-100">
-<header class="custom-header w-full shadow-md py-3">
+<header class="custom-header w-full bg-blue-600 shadow-md py-3">
+    <div class="container mx-auto flex justify-between items-center px-4">
+        <!-- Kontak Info -->
+        <div class="hidden md:flex items-center space-x-4 text-sm text-white">
+            <span><i class="fas fa-phone-alt"></i> 0811 806 1116</span>
+            <span><i class="fas fa-envelope"></i> info@zadulmaadmandiri.com</span>
+        </div>
 
-<div class="container mx-auto flex justify-between items-center py-2 px-4"> <div class="flex items-center space-x-4 text-sm">
-  <span style="color: white;">
-   <i class="fas fa-telepon-alt">
-   </i>
-   0811 806 1116
-  </span>
-  <span  style="color: white;"> 
-   <i class="fas fa-envelope">
-   </i>
-   info@zadulmaadmandiri.com
-  </span>
- </div>
- <div  style="color: white;" class="text-sm">
-  SEMUA ORANG BISA UMROH &amp; HAJI
- </div>
-</div>
+        <!-- Slogan (Selalu Ditampilkan) -->
+        <div class="text-sm text-white font-semibold text-center md:text-left flex-1">
+            SEMUA ORANG BISA UMROH &amp; HAJI
+        </div>
+
+        <!-- Tombol Sign In & Sign Up -->
+        <div class="hidden md:flex space-x-2">
+            <a id="openModal"  href="#" class="bg-white text-blue-600 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-gray-200 transition">
+                Sign In
+            </a>
+            <a href="signupuser.php" class="bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition">
+                Sign Up
+            </a>
+        </div>
+
+        <!-- Tombol Menu Mobile -->
+        <button id="mobile-menu-button" class="md:hidden text-white focus:outline-none">
+            <i class="fas fa-bars text-2xl"></i>
+        </button>
+    </div>
+
+    <!-- Menu Mobile (Hidden by Default) -->
+    <div id="mobile-menu" class="hidden md:hidden flex flex-col items-center bg-blue-700 text-white p-4 space-y-2">
+        <a href="#" class="w-full text-center py-2 bg-white text-blue-600 rounded-lg font-semibold">Sign In</a>
+        <a href="#" class="w-full text-center py-2 bg-blue-500 rounded-lg font-semibold">Sign Up</a>
+    </div>
 </header>
+
 	<div class="container mx-auto p-4 max-w-7xl">
 	<h1 class="text-2xl font-bold text-center mb-4">Paket Umroh & Haji - Travel Terbaik</h1>
 
@@ -393,7 +410,7 @@ document.addEventListener("DOMContentLoaded", function () {
 				messageBox.textContent = data;
 				messageBox.classList.add("bg-green-100", "text-green-700", "border-green-500");
 				setTimeout(() => {
-					window.location.href = "dashboard.php"; // Redirect setelah login sukses
+					window.location.href = "daftarprodukuser.php"; // Redirect setelah login sukses
 				}, 1500);
 			} else {
 				messageBox.textContent = data;
@@ -429,7 +446,11 @@ function cekKodeReferal() {
 </script>
 <!-- Script untuk Modal -->
 
-
+<script>
+    document.getElementById("mobile-menu-button").addEventListener("click", function () {
+        document.getElementById("mobile-menu").classList.toggle("hidden");
+    });
+</script>
 <!-- Style Tambahan -->
 <style>
 	.form-input {
